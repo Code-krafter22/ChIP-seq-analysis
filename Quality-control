@@ -1,0 +1,40 @@
+#!/bin/bash
+
+#SBATCH --chdir=/home/k/kashvichirag
+#SBATCH --job-name=qualityreads
+#SBATCH --nodes=1
+#SBATCH --ntasks-per-node=1
+#SBATCH --mem=10000
+#SBATCH --time=05:00:00
+#SBATCH --output=run.out
+#SBATCH --error=run.err
+#SBATCH --mail-user=abc.123g@xyz.edu
+#SBATCH --mail-type=BEGIN,END,FAIL
+
+# -------------------------------
+# Quality Check of Raw Reads using FastQC
+# Date: April 2025
+# Description: This script downloads raw FASTQ files and performs quality control using FastQC.
+# -------------------------------
+
+# Create and move to working directory
+mkdir -p midterm
+cd midterm
+
+# Download FASTQ files from EBI FTP server
+wget -c "ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR181/000/SRR1810900/SRR1810900.fastq.gz"
+wget -c "ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR181/007/SRR1810907/SRR1810907.fastq.gz"
+wget -c "ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR181/008/SRR1810918/SRR1810918.fastq.gz"
+wget -c "ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR181/002/SRR1810912/SRR1810912.fastq.gz"
+
+# Load FastQC module
+module purge
+module load apps/fastqc/0.11.5
+
+# Run FastQC on each file
+fastqc SRR1810900.fastq.gz
+fastqc SRR1810907.fastq.gz
+fastqc SRR1810918.fastq.gz
+fastqc SRR1810912.fastq.gz
+
+echo "FastQC analysis completed for all samples."
