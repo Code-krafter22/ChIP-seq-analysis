@@ -1,4 +1,5 @@
-ChIP-seq Analysis Pipeline
+##ChIP-seq Analysis Pipeline
+
 This repository contains SLURM job scripts for a basic ChIP-seq analysis pipeline, including:
 
 Quality control using FastQC
