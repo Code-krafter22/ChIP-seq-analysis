@@ -1,0 +1,52 @@
+#!/bin/bash
+
+#SBATCH --chdir=/home/k/kashvichirag/midterm
+#SBATCH --job-name=ChIPseqMapping2
+#SBATCH --nodes=1
+#SBATCH --ntasks-per-node=1
+#SBATCH --cpus-per-task=6
+#SBATCH --mem=20000
+#SBATCH --time=20:00:00
+#SBATCH --output=run.out
+#SBATCH --error=run.err
+#SBATCH --mail-user=abc.123@xyz.edu
+#SBATCH --mail-type=BEGIN,END,FAIL
+
+# -----------------------------
+# ChIP-seq Read Mapping Script
+# Date: April 2025
+# Description: This script maps ChIP-seq reads using Bowtie2, converts SAM to BAM,
+#              sorts and indexes BAM files. Designed to run on a SLURM cluster.
+# -----------------------------
+
+# Load necessary modules
+module purge
+module load apps/bowtie/2.3.2
+module load apps/samtools/1.3.1
+
+# Set reference genome path
+REF_GENOME="new_refgenome/GRCh38_noalt_as"
+
+# Mapping and processing each FASTQ file individually
+
+# Sample SRR1810900
+bowtie2 -x $REF_GENOME -U SRR1810900.fastq.gz -S SRR1810900.sam --threads 6 -k 1 -q 2> SRR1810900.out
+samtools view -u SRR1810900.sam | samtools sort -o SRR1810900.bam
+samtools index SRR1810900.bam
+
+# Sample SRR1810907
+bowtie2 -x $REF_GENOME -U SRR1810907.fastq.gz -S SRR1810907.sam --threads 6 -k 1 -q 2> SRR1810907.out
+samtools view -u SRR1810907.sam | samtools sort -o SRR1810907.bam
+samtools index SRR1810907.bam
+
+# Sample SRR1810912
+bowtie2 -x $REF_GENOME -U SRR1810912.fastq.gz -S SRR1810912.sam --threads 6 -k 1 -q 2> SRR1810912.out
+samtools view -u SRR1810912.sam | samtools sort -o SRR1810912.bam
+samtools index SRR1810912.bam
+
+# Sample SRR1810918
+bowtie2 -x $REF_GENOME -U SRR1810918.fastq.gz -S SRR1810918.sam --threads 6 -k 1 -q 2> SRR1810918.out
+samtools view -u SRR1810918.sam | samtools sort -o SRR1810918.bam
+samtools index SRR1810918.bam
+
+echo "All alignments completed and BAM files indexed."
