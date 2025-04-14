@@ -1,0 +1,33 @@
+#!/bin/bash
+
+#SBATCH --chdir=/home/k/kashvichirag/midterm
+#SBATCH --job-name=MACS3_PeakCalling
+#SBATCH --nodes=1
+#SBATCH --ntasks=1
+#SBATCH --mem=10000
+#SBATCH --time=12:00:00
+#SBATCH --output=macs3.out
+#SBATCH --error=macs3.err
+#SBATCH --mail-user=abc.123@xyz.edu
+#SBATCH --mail-type=BEGIN,END,FAIL
+
+# -------------------------------
+# MACS3 Peak Calling SLURM Script
+# Description: Call peaks for YAP1, TAZ, and TEAD4 ChIP-seq data using MACS3.
+# -------------------------------
+
+# Load conda environment with MACS3
+source ~/.bash_profile
+module purge
+conda activate macs3
+
+# Run MACS3 for YAP1
+macs3 callpeak -t SRR1810900.bam -c SRR1810912.bam -f BAM -n YAP1_macs3 -g hs --outdir YAP1_macs3_peak
+
+# Run MACS3 for TAZ
+macs3 callpeak -t SRR1810907.bam -c SRR1810912.bam -f BAM -n TAZmacs3 -g hs --outdir TAZ_macs3_peak
+
+# Run MACS3 for TEAD4
+macs3 callpeak -t SRR1810918.bam -c SRR1810912.bam -f BAM -n TEAD4_macs3 -g hs --outdir TEAD4_macs3_peak
+
+echo "MACS3 peak calling completed for YAP1, TAZ, and TEAD4."
